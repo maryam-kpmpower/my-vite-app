@@ -1,4 +1,25 @@
-p {
-    display: flex;
-    justify-content: center;
+.product-page {
+    p {
+        display: flex;
+        justify-content: center;
+    }
+
+    .action {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+
+        button {
+            border: 1px solid rgb(230, 231, 224);
+            border-radius: 0.2rem;
+            outline: none;
+            cursor: pointer;
+            &:active {
+                border-color: rgb(39, 33, 33);
+            }
+            &:hover {
+                border-color: rgb(230, 231, 224);
+            }
+        }
+    }
 }
