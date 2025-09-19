@@ -1,12 +1,13 @@
-import Login from './components/Login/Login.tsx';
-// import './App.css'
+// import LoginPage from './pages/LoginPage/LoginPage';
+import AppRouter from './routes/AppRouter';
 
 function App() {
-  return (
-    <div>
-      <Login />
-    </div>
-  );
+    return (
+        // <div>
+        //     <LoginPage />
+        // </div>
+        <AppRouter />
+    );
 }
 
 export default App;
