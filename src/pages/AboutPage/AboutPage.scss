@@ -1,0 +1,15 @@
+.router-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    button {
+        border: 1px solid rgb(230, 231, 224);
+        border-radius: 0.2rem;
+        outline: none;
+        cursor: pointer;
+        &:active {
+            border-color: rgb(39, 33, 33);
+        }
+    }
+}
