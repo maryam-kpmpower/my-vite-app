@@ -1,12 +1,23 @@
 import { useState } from 'react';
 import { users } from '../../data/Users';
 import { validateLogin } from './LoginFormUtils';
+import { useNavigate } from 'react-router-dom';
 import './LoginForm.scss';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    // useNavigate is an idomatic hook
+    // useNavigate is fully typed in React Router v.6+
+    // inferred type is: NavigateFunction
+    // type NavigateFunction = (
+    //     to: To | number,
+    //     options?: { replace?: boolean; state?: any }
+    //     ) => void;
+
+    const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
         // stops the page from refreshing when form is submitted
@@ -18,7 +29,8 @@ const LoginForm = () => {
         }
 
         setError('');
-        alert('Welcome!');
+        // alert('Welcome!');
+        navigate('/about');
     };
 
     return (
