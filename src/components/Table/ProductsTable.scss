@@ -1,0 +1,16 @@
+.products-table {
+    border-collapse: collapse;
+    width: 80%; // table width
+    max-width: 800px;
+    text-align: left;
+
+    th,
+    td {
+        border: 1px solid #ccc; // table borders
+        padding: 8px 12px;
+    }
+
+    thead {
+        background-color: #f0f0f0; // light grey header
+    }
+}

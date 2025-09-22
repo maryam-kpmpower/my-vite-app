@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Product } from './ProductsTableUtils';
+import './ProductsTable.scss';
 
 type ProductsTableProps = {
     data: Product[];
