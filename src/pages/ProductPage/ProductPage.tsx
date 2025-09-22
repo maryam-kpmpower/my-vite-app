@@ -27,17 +27,22 @@ const ProductPage: React.FC = () => {
     useEffect(() => {
         const getProducts = async () => {
             try {
+                setLoading(true);
                 const products = await fetchProducts();
                 setProducts(products);
                 console.log(products);
             } catch (error) {
                 console.log('error is:', error);
+                setError('Failed to fetch products.');
             } finally {
                 setLoading(false);
             }
         };
         getProducts();
     }, []); // useEffect is only run once due to []. all set attributes are scheduled for after useEffect is done running.
+
+    if (loading) return <p>Loading products...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <div className="product-page">
@@ -57,7 +62,7 @@ const ProductPage: React.FC = () => {
                 <h2>Proucts Table</h2>
                 <ProductsTable data={products}></ProductsTable>
             </div>
-            {/* button to initiate api fetch
+            {/* button to initiate api fetch - event handler
             <div className="action">
                 <button className="fetch-data-btn" onClick={handleFetch}>
                     Fetch Products
