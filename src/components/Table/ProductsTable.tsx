@@ -53,7 +53,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ data, colOrder }) => {
             <thead>
                 <tr>
                     {headers.map((header) => (
-                        <th key={String(header)}>
+                        <th key={String(header)} className={`col-${header}`}>
                             <span>{String(header)}</span>
                             <button onClick={() => handleSort(header)}>
                                 {sortConfig.key === header
@@ -70,7 +70,10 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ data, colOrder }) => {
                 {sortedData.map((row, index) => (
                     <tr key={row.id || index}>
                         {headers.map((header) => (
-                            <td key={String(header)}>
+                            <td
+                                key={String(header)}
+                                className={`cell-${header}`}
+                            >
                                 {typeof row[header] === 'object'
                                     ? JSON.stringify(row[header])
                                     : String(row[header])}

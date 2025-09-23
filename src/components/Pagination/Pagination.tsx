@@ -1,3 +1,5 @@
+import './Pagination.scss';
+
 type PaginationProps = {
     productsPerPage: number;
     totalProducts: number;
@@ -57,7 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({
                     <li
                         key={number}
                         className={`page-item ${
-                            currentPage === number ? 'active' : ''
+                            currentPage === number ? 'active' : 'disabled'
                         }`}
                     >
                         <a

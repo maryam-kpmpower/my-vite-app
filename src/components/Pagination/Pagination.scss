@@ -1,0 +1,20 @@
+nav .pagination {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.page-link {
+    color: black;
+    padding: 0.2rem;
+    cursor: pointer;
+}
+
+.page-item.active .page-link {
+    text-decoration: underline;
+}
+.page-item.disabled .page-link {
+    opacity: 0.5;
+}

@@ -1,17 +1,28 @@
 .products-table {
     border-collapse: collapse;
-    width: fit-content;
-    max-width: 100%;
+    width: 50rem;
     text-align: left;
+    table-layout: fixed;
 
     th,
     td {
         border: 1px solid #ccc;
         padding: 8px 12px;
+        word-wrap: break-word;
+        white-space: normal;
+        vertical-align: top;
     }
 
     thead {
         background-color: #f0f0f0;
+    }
+
+    [class$='-userId'] {
+        width: 7rem;
+    }
+
+    [class$='-id'] {
+        width: 5rem;
     }
 
     button {

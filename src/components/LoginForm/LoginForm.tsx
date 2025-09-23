@@ -16,6 +16,7 @@ const LoginForm = () => {
     //     to: To | number,
     //     options?: { replace?: boolean; state?: any }
     //     ) => void;
+
     const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -29,7 +30,6 @@ const LoginForm = () => {
 
         setError('');
         navigate('/about');
-        // alert('Welcome!');
     };
 
     return (

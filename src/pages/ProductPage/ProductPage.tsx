@@ -52,8 +52,11 @@ const ProductPage: React.FC = () => {
             <div className="products">
                 <h2>Proucts Table</h2>
                 <ServerSidePagination />
-                {/* <ProductsTable data={products}></ProductsTable> */}
+
+                {/* no server-side pagination
+                <ProductsTable data={products}></ProductsTable> */}
             </div>
+
             {/* button to initiate api fetch - event handler
             <div className="action">
             <button className="fetch-data-btn" onClick={handleFetch}>
