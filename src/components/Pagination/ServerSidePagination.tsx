@@ -56,3 +56,5 @@ const ServerSidePagination: React.FC = () => {
         </div>
     );
 };
+
+export default ServerSidePagination;

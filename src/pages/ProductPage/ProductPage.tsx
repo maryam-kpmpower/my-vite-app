@@ -4,6 +4,7 @@ import { fetchProducts } from '../../api/ProductsApi';
 import type { Product } from '../../types/ProductType';
 import ProductsTable from '../../components/Table/ProductsTable';
 import { Link } from 'react-router-dom';
+import ServerSidePagination from '../../components/Pagination/ServerSidePagination';
 
 const ProductPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -47,6 +48,27 @@ const ProductPage: React.FC = () => {
     return (
         <div className="product-page">
             <h2>Products Page</h2>
+            {/* automatic rendering of the table - useEffect */}
+            <div className="products">
+                <h2>Proucts Table</h2>
+                <ServerSidePagination />
+                {/* <ProductsTable data={products}></ProductsTable> */}
+            </div>
+            {/* button to initiate api fetch - event handler
+            <div className="action">
+            <button className="fetch-data-btn" onClick={handleFetch}>
+            Fetch Products
+            </button>
+            {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+            </div>
+            <ul>
+            {products.map((p) => (
+                <li key={p.id}>
+                id: {p.id}, user id: {p.userId}, title: {p.title}
+                </li>
+                ))}
+                </ul> */}
             <ul>
                 <li>
                     Notice that router is case insensitive; e.g. "/proDucTs"
@@ -57,26 +79,6 @@ const ProductPage: React.FC = () => {
                     "/products".
                 </li>
             </ul>
-            {/* automatic rendering of the table - useEffect */}
-            <div className="products">
-                <h2>Proucts Table</h2>
-                <ProductsTable data={products}></ProductsTable>
-            </div>
-            {/* button to initiate api fetch - event handler
-            <div className="action">
-                <button className="fetch-data-btn" onClick={handleFetch}>
-                    Fetch Products
-                </button>
-                {loading && <p>Loading...</p>}
-                {error && <p>{error}</p>}
-            </div>
-            <ul>
-                {products.map((p) => (
-                    <li key={p.id}>
-                        id: {p.id}, user id: {p.userId}, title: {p.title}
-                    </li>
-                ))}
-            </ul> */}
         </div>
     );
 };

@@ -16,7 +16,3 @@ export const fetchProducts = async (): Promise<Product[]> => {
         return [];
     }
 };
-
-export const fetchProductsForPagination = async (): Promise<Response> => {
-    const url = `https://jsonplaceholder.typicode.com/albums?_page=${currentPage}&_limit=${productsPerPage}`;
-};
