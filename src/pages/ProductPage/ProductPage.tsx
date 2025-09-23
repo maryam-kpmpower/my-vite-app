@@ -1,6 +1,6 @@
 import './ProductPage.scss';
 import { useEffect, useState } from 'react';
-import { fetchProducts } from '../../api/Product';
+import { fetchProducts } from '../../api/ProductsApi';
 import type { Product } from '../../types/ProductType';
 import ProductsTable from '../../components/Table/ProductsTable';
 import { Link } from 'react-router-dom';
