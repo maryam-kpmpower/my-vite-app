@@ -15,6 +15,7 @@ const ProductPage: React.FC = () => {
     const [totalProducts, setTotalProducts] = useState<number>(0);
     const productsPerPage: number = 12;
     const [searchArgs, setSearchArgs] = useState<{
+        userId?: number;
         id?: number;
         title?: string;
     }>({});
@@ -25,6 +26,12 @@ const ProductPage: React.FC = () => {
             try {
                 setLoading(true);
                 let url = `https://jsonplaceholder.typicode.com/albums?_page=${currentPage}&_limit=${productsPerPage}`;
+                if (
+                    searchArgs.userId !== undefined &&
+                    !isNaN(searchArgs.userId)
+                ) {
+                    url += `&userId=${searchArgs.userId}`;
+                }
                 if (searchArgs.id !== undefined && !isNaN(searchArgs.id)) {
                     url += `&id=${searchArgs.id}`;
                 }

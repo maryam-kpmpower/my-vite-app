@@ -16,6 +16,7 @@ import './Searchbar.scss';
 }
 
 interface SearchArgs {
+    userId?: number;
     id?: number;
     title?: string;
 }
@@ -25,13 +26,19 @@ interface SearchbarProps {
 }
 
 const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
+    const [searchUserId, setSearchUserId] = useState('');
     const [searchId, setSearchId] = useState('');
     const [searchTitle, setSearchTitle] = useState('');
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const userId = Number(searchUserId);
         const args: SearchArgs = {};
         const id = Number(searchId);
         const title = searchTitle.trim();
+        if (searchUserId !== '' && userId >= 0) {
+            args.userId = userId;
+        }
         if (searchId !== '' && id >= 0) {
             args.id = id;
         }
@@ -42,6 +49,20 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
     };
     return (
         <div className="searchbar">
+            <div className="search-by-userid">
+                <label htmlFor="userid-input">User ID:</label>
+                <input
+                    className="userid-input"
+                    id="userid-input"
+                    type="number"
+                    placeholder="userId"
+                    value={searchUserId}
+                    onChange={(e) => {
+                        setSearchUserId(e.target.value);
+                    }}
+                    min={0}
+                />
+            </div>
             <div className="search-by-id">
                 <label htmlFor="id-input">ID:</label>
                 <input
@@ -67,7 +88,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
                     onChange={(e) => setSearchTitle(e.target.value)}
                 />
             </div>
-            <button className="search-btn" onClick={handleClick}>
+            <button className="search-btn" type="button" onClick={handleClick}>
                 Search
             </button>
         </div>
