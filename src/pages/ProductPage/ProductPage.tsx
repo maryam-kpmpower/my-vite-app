@@ -1,36 +1,41 @@
 import './ProductPage.scss';
 import { useEffect, useState } from 'react';
-import { fetchProducts } from '../../api/ProductsApi';
+// import { fetchProducts } from '../../api/ProductsApi';
 import type { Product } from '../../types/ProductType';
 import ProductsTable from '../../components/Table/ProductsTable';
-import { Link } from 'react-router-dom';
-import ServerSidePagination from '../../components/Pagination/ServerSidePagination';
+// import { Link } from 'react-router-dom';
+import Pagination from '../../components/Pagination/Pagination';
+import Searchbar from '../../components/Searchbar/Searchbar';
 
 const ProductPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // // event handler when clicking a button
-    // const handleFetch = async () => {
-    //     setLoading(true);
-    //     setError(null);
-    //     try {
-    //         const result = await fetchProducts();
-    //         setProducts(result);
-    //     } catch (error) {
-    //         setError('Failed to fetch products.');
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalProducts, setTotalProducts] = useState<number>(0);
+    const productsPerPage: number = 12;
 
+    const [applySerach, setApplySearch] = useState('');
+
+    // server-side pagination
     useEffect(() => {
-        const getProducts = async () => {
+        const callProducts = async () => {
             try {
                 setLoading(true);
-                const products = await fetchProducts();
+                let url = `https://jsonplaceholder.typicode.com/albums?_page=${currentPage}&_limit=${productsPerPage}`;
+                if (applySerach) {
+                    url += `&id=${applySerach}`;
+                }
+                const response = await fetch(url);
+                if (!response.ok)
+                    throw new Error(`Response error: ${response}`);
+                const products: Product[] = await response.json(); // don't forget the await keyword
+                const totalProducts: number = Number(
+                    response.headers.get('X-Total-Count'),
+                );
                 setProducts(products);
+                setTotalProducts(totalProducts);
                 console.log(products);
             } catch (error) {
                 console.log('error is:', error);
@@ -39,8 +44,8 @@ const ProductPage: React.FC = () => {
                 setLoading(false);
             }
         };
-        getProducts();
-    }, []); // useEffect is only run once due to []. all set attributes are scheduled for after useEffect is done running.
+        callProducts();
+    }, [currentPage, applySerach]);
 
     if (loading) return <p>Loading products...</p>;
     if (error) return <p>{error}</p>;
@@ -51,27 +56,29 @@ const ProductPage: React.FC = () => {
             {/* automatic rendering of the table - useEffect */}
             <div className="products">
                 <h2>Proucts Table</h2>
-                <ServerSidePagination />
+                <Searchbar
+                    onSearch={(id: string) => {
+                        setApplySearch(id);
+                        setCurrentPage(1);
+                    }}
+                />
+                <div className="table-container">
+                    {loading ? (
+                        <p>Loading ...</p>
+                    ) : (
+                        <ProductsTable data={products}></ProductsTable>
+                    )}
+                    <Pagination
+                        productsPerPage={productsPerPage}
+                        totalProducts={totalProducts}
+                        currentPage={currentPage}
+                        paginate={setCurrentPage}
+                    />
+                </div>
 
-                {/* no server-side pagination
+                {/* with no server-side pagination
                 <ProductsTable data={products}></ProductsTable> */}
             </div>
-
-            {/* button to initiate api fetch - event handler
-            <div className="action">
-            <button className="fetch-data-btn" onClick={handleFetch}>
-            Fetch Products
-            </button>
-            {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            </div>
-            <ul>
-            {products.map((p) => (
-                <li key={p.id}>
-                id: {p.id}, user id: {p.userId}, title: {p.title}
-                </li>
-                ))}
-                </ul> */}
             <ul>
                 <li>
                     Notice that router is case insensitive; e.g. "/proDucTs"

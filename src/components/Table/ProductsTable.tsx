@@ -21,9 +21,9 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ data, colOrder }) => {
 
     const sortedData = useMemo(() => {
         if (!sortConfig.key) return data;
-        const sorted = [...data].sort((colA, colB) => {
-            const aVal = colA[sortConfig.key!];
-            const bVal = colB[sortConfig.key!];
+        const sorted = [...data].sort((a, b) => {
+            const aVal = a[sortConfig.key!];
+            const bVal = b[sortConfig.key!];
             if (typeof aVal === 'number' && typeof bVal === 'number') {
                 return aVal - bVal;
             } else {
