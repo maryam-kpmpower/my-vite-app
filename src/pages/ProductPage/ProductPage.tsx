@@ -11,12 +11,13 @@ const ProductPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalProducts, setTotalProducts] = useState<number>(0);
     const productsPerPage: number = 12;
-
-    const [applySerach, setApplySearch] = useState('');
+    const [searchArgs, setSearchArgs] = useState<{
+        id?: number;
+        title?: string;
+    }>({});
 
     // server-side pagination
     useEffect(() => {
@@ -24,8 +25,13 @@ const ProductPage: React.FC = () => {
             try {
                 setLoading(true);
                 let url = `https://jsonplaceholder.typicode.com/albums?_page=${currentPage}&_limit=${productsPerPage}`;
-                if (applySerach) {
-                    url += `&id=${applySerach}`;
+                if (searchArgs.id !== undefined && !isNaN(searchArgs.id)) {
+                    url += `&id=${searchArgs.id}`;
+                }
+                if (searchArgs.title && searchArgs.title.trim() !== '') {
+                    url += `&title_like=${encodeURIComponent(
+                        searchArgs.title.trim(),
+                    )}`;
                 }
                 const response = await fetch(url);
                 if (!response.ok)
@@ -45,7 +51,7 @@ const ProductPage: React.FC = () => {
             }
         };
         callProducts();
-    }, [currentPage, applySerach]);
+    }, [currentPage, searchArgs]);
 
     if (loading) return <p>Loading products...</p>;
     if (error) return <p>{error}</p>;
@@ -57,8 +63,8 @@ const ProductPage: React.FC = () => {
             <div className="products">
                 <h2>Proucts Table</h2>
                 <Searchbar
-                    onSearch={(id: string) => {
-                        setApplySearch(id);
+                    onSearch={(searchArgs) => {
+                        setSearchArgs(searchArgs);
                         setCurrentPage(1);
                     }}
                 />
