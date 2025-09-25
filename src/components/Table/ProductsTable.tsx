@@ -5,11 +5,10 @@ import Pagination from '../Pagination/Pagination';
 import Searchbar from '../Searchbar/Searchbar';
 
 type ProductsTableProps = {
-    data: Product[];
     colOrder?: (keyof Product)[];
 };
 
-const ProductsTable: React.FC<ProductsTableProps> = ({ data, colOrder }) => {
+const ProductsTable: React.FC<ProductsTableProps> = ({ colOrder }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -64,10 +63,12 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ data, colOrder }) => {
         };
         callProducts();
     }, [currentPage, searchArgs]);
-    if (!data.length) return <p>No Data Available.</p>;
 
     const headers: (keyof Product)[] =
-        colOrder ?? (Object.keys(data[0]) as (keyof Product)[]); // only returns a string of valid keys defiend in type Product
+        colOrder ??
+        (products.length > 0
+            ? (Object.keys(products[0]) as (keyof Product)[])
+            : []); // only returns a string of valid keys defiend in type Product
 
     const handleSort = (key: keyof Product) => {
         setSortConfig((prev) => {
@@ -84,8 +85,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ data, colOrder }) => {
         });
     };
     const sortedData = useMemo(() => {
-        if (!sortConfig.key) return data;
-        const sorted = [...data].sort((a, b) => {
+        if (!sortConfig.key) return products;
+        const sorted = [...products].sort((a, b) => {
             const aVal = a[sortConfig.key!];
             const bVal = b[sortConfig.key!];
             if (typeof aVal === 'number' && typeof bVal === 'number') {
@@ -95,8 +96,9 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ data, colOrder }) => {
             }
         });
         return sortConfig.direction === 'ascending' ? sorted : sorted.reverse();
-    }, [data, sortConfig]);
+    }, [products, sortConfig]);
 
+    if (!products.length) return <p>No Data Available.</p>;
     if (loading) return <p>Loading products...</p>;
     if (error) return <p>{error}</p>;
 
