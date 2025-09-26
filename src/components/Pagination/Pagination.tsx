@@ -71,10 +71,12 @@ const Pagination: React.FC<PaginationProps> = ({
                         </a>
                     </li>
                 ))}
-                {/* prev button */}
+                {/* next button */}
                 <li
                     className={`page-item ${
-                        currentPage === totalPages ? 'disabled' : ''
+                        currentPage === totalPages || totalPages < 1
+                            ? 'disabled'
+                            : ''
                     }`}
                 >
                     <a
