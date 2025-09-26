@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Searchbar.scss';
+import { useDebounce } from '../../hooks/CustomHooks';
 
 interface SearchArgs {
     userId?: number;
@@ -22,22 +23,31 @@ const AutoSearchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
     const [searchId, setSearchId] = useState('');
     const [searchTitle, setSearchTitle] = useState('');
 
+    const debouncedSearchUserId = useDebounce(searchUserId, 500);
+    const debouncedSearchId = useDebounce(searchId, 500);
+    const debouncedSearchTitle = useDebounce(searchTitle, 500);
+
     useEffect(() => {
         const userId = Number(searchUserId);
         const args: SearchArgs = {};
         const id = Number(searchId);
         const title = searchTitle.trim();
-        if (searchUserId !== '' && userId >= 0) {
+        if (debouncedSearchUserId !== '' && userId >= 0) {
             args.userId = userId;
         }
-        if (searchId !== '' && id >= 0) {
+        if (debouncedSearchId !== '' && id >= 0) {
             args.id = id;
         }
-        if (title !== '') {
+        if (debouncedSearchTitle !== '') {
             args.title = title;
         }
         onSearch(args);
-    }, [searchUserId, searchId, searchTitle, onSearch]);
+    }, [
+        debouncedSearchUserId,
+        debouncedSearchId,
+        debouncedSearchTitle,
+        onSearch,
+    ]);
 
     return (
         <div className="searchbar">
