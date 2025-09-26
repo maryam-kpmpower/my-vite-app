@@ -3,6 +3,7 @@ import './ProductsTable.scss';
 import React, { useState, useMemo, useEffect } from 'react';
 import Pagination from '../Pagination/Pagination';
 import Searchbar from '../Searchbar/Searchbar';
+import AutoSearchbar from '../Searchbar/AutoSearchbar';
 
 type ProductsTableProps = {
     colOrder?: (keyof Product)[];
@@ -106,7 +107,10 @@ const ServerFetchProductsTable: React.FC<ProductsTableProps> = ({
 
     return (
         <div className="container">
+            {/* using search button to apply filter */}
             <Searchbar onSearch={setSearchArgs} />
+            {/* using useEffect for automatic search */}
+            {/* <AutoSearchbar onSearch={setSearchArgs} /> */}
             {products.length === 0 ? (
                 <p>No Data Available.</p>
             ) : (

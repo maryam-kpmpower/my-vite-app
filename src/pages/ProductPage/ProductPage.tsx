@@ -1,5 +1,5 @@
 import './ProductPage.scss';
-// import ServerFetchProductsTable from '../../components/Table/ServerFetchProductsTable';
+import ServerFetchProductsTable from '../../components/Table/ServerFetchProductsTable';
 import ServerUseQueryProductsTable from '../../components/Table/ServerUseQueryProductsTable';
 
 const ProductPage: React.FC = () => {
