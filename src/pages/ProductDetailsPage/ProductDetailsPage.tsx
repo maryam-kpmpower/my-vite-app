@@ -26,7 +26,7 @@ const ProductDetailsPage: React.FC = () => {
         <div className="product-details">
             <h2>Product ID: {data.id}</h2>
             <p>User ID: {data.userId}</p>
-            <p>Tile: {data.title}</p>
+            <p>Title: {data.title}</p>
         </div>
     );
 };

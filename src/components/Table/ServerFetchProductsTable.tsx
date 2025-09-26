@@ -3,7 +3,7 @@ import './ProductsTable.scss';
 import React, { useState, useMemo, useEffect } from 'react';
 import Pagination from '../Pagination/Pagination';
 import Searchbar from '../Searchbar/Searchbar';
-import AutoSearchbar from '../Searchbar/AutoSearchbar';
+// import AutoSearchbar from '../Searchbar/AutoSearchbar';
 
 type ProductsTableProps = {
     colOrder?: (keyof Product)[];
