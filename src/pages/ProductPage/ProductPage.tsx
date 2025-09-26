@@ -8,9 +8,9 @@ const ProductPage: React.FC = () => {
             <h2>Products Page</h2>
             <div className="products">
                 <h2>Products Table</h2>
-                {/* with server-side pagination and simple fetch */}
+                {/* using server-side pagination and simple fetch */}
                 {/* <ServerFetchProductsTable /> */}
-                {/* with react-query */}
+                {/* using server-side pagination and react-query */}
                 <ServerUseQueryProductsTable />
             </div>
             <div className="note">

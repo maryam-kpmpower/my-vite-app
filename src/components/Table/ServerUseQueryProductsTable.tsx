@@ -2,8 +2,9 @@ import { type Product } from '../../types/ProductType';
 import './ProductsTable.scss';
 import React, { useState, useMemo } from 'react';
 import Pagination from '../Pagination/Pagination';
-import Searchbar from '../Searchbar/Searchbar';
+// import Searchbar from '../Searchbar/Searchbar';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import AutoSearchbar from '../Searchbar/AutoSearchbar';
 
 type ProductsTableProps = {
     colOrder?: (keyof Product)[];
@@ -95,7 +96,10 @@ const ServerUseQueryProductsTable: React.FC<ProductsTableProps> = ({
 
     return (
         <div className="container">
-            <Searchbar onSearch={setSearchArgs} />
+            {/* using search button to apply filter */}
+            {/* <Searchbar onSearch={setSearchArgs} /> */}
+            {/* using useEffect for automatic search */}
+            <AutoSearchbar onSearch={setSearchArgs} />
             {products.length === 0 ? (
                 <p>No Data Available.</p>
             ) : (
