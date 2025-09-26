@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import './Searchbar.scss';
 
+interface SearchArgs {
+    userId?: number;
+    id?: number;
+    title?: string;
+}
+
 {
     /* onSearch:
     callback function passed from parent (ProductsPage) to child (Searchbar)
@@ -14,13 +20,6 @@ import './Searchbar.scss';
     
     */
 }
-
-interface SearchArgs {
-    userId?: number;
-    id?: number;
-    title?: string;
-}
-
 interface SearchbarProps {
     onSearch: (args: SearchArgs) => void;
 }
@@ -30,8 +29,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
     const [searchId, setSearchId] = useState('');
     const [searchTitle, setSearchTitle] = useState('');
 
-    const handleClick = (e: React.MouseEvent) => {
-        e.preventDefault();
+    const handleSearch = () => {
         const userId = Number(searchUserId);
         const args: SearchArgs = {};
         const id = Number(searchId);
@@ -47,6 +45,12 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
         }
         onSearch(args);
     };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    };
     return (
         <div className="searchbar">
             <div className="search-by-userid">
@@ -59,6 +63,9 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
                     value={searchUserId}
                     onChange={(e) => {
                         setSearchUserId(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                        handleKeyDown(e);
                     }}
                     min={0}
                 />
@@ -74,6 +81,9 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
                     onChange={(e) => {
                         setSearchId(e.target.value);
                     }}
+                    onKeyDown={(e) => {
+                        handleKeyDown(e);
+                    }}
                     min={0}
                 />
             </div>
@@ -86,9 +96,12 @@ const Searchbar: React.FC<SearchbarProps> = ({ onSearch }) => {
                     placeholder="title"
                     value={searchTitle}
                     onChange={(e) => setSearchTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                        handleKeyDown(e);
+                    }}
                 />
             </div>
-            <button className="search-btn" type="button" onClick={handleClick}>
+            <button className="search-btn" type="button" onClick={handleSearch}>
                 Search
             </button>
         </div>

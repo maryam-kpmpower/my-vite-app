@@ -1,4 +1,4 @@
-import { type Product } from './ProductsTableUtils';
+import type { Product } from '../../types/ProductType';
 import './ProductsTable.scss';
 import React, { useState, useMemo, useEffect } from 'react';
 import Pagination from '../Pagination/Pagination';
@@ -8,13 +8,15 @@ type ProductsTableProps = {
     colOrder?: (keyof Product)[];
 };
 
-const ProductsTable: React.FC<ProductsTableProps> = ({ colOrder }) => {
+const ServerFetchProductsTable: React.FC<ProductsTableProps> = ({
+    colOrder,
+}) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalProducts, setTotalProducts] = useState<number>(0);
-    const productsPerPage: number = 12;
+    const productsPerPage: number = 8;
     const [sortConfig, setSortConfig] = useState<{
         key: keyof Product | null;
         direction: 'ascending' | 'descending';
@@ -64,6 +66,20 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ colOrder }) => {
         callProducts();
     }, [currentPage, searchArgs]);
 
+    const sortedData: Product[] = useMemo(() => {
+        if (!sortConfig.key) return products;
+        const sorted = [...products].sort((a, b) => {
+            const aVal = a[sortConfig.key!];
+            const bVal = b[sortConfig.key!];
+            if (typeof aVal === 'number' && typeof bVal === 'number') {
+                return aVal - bVal;
+            } else {
+                return String(aVal).localeCompare(String(bVal));
+            }
+        });
+        return sortConfig.direction === 'ascending' ? sorted : sorted.reverse();
+    }, [products, sortConfig]);
+
     const headers: (keyof Product)[] =
         colOrder ??
         (products.length > 0
@@ -84,64 +100,55 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ colOrder }) => {
             return { key, direction: 'ascending' };
         });
     };
-    const sortedData = useMemo(() => {
-        if (!sortConfig.key) return products;
-        const sorted = [...products].sort((a, b) => {
-            const aVal = a[sortConfig.key!];
-            const bVal = b[sortConfig.key!];
-            if (typeof aVal === 'number' && typeof bVal === 'number') {
-                return aVal - bVal;
-            } else {
-                return String(aVal).localeCompare(String(bVal));
-            }
-        });
-        return sortConfig.direction === 'ascending' ? sorted : sorted.reverse();
-    }, [products, sortConfig]);
 
-    if (!products.length) return <p>No Data Available.</p>;
     if (loading) return <p>Loading products...</p>;
     if (error) return <p>{error}</p>;
 
     return (
         <div className="container">
             <Searchbar onSearch={setSearchArgs} />
-            <table className="products-table">
-                <thead>
-                    <tr>
-                        {headers.map((header) => (
-                            <th
-                                key={String(header)}
-                                className={`col-${header}`}
-                            >
-                                <span>{String(header)}</span>
-                                <button onClick={() => handleSort(header)}>
-                                    {sortConfig.key === header
-                                        ? sortConfig.direction === 'ascending'
-                                            ? '▲'
-                                            : '▼'
-                                        : '⇅'}
-                                </button>
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {sortedData.map((row, index) => (
-                        <tr key={row.id || index}>
+            {products.length === 0 ? (
+                <p>No Data Available.</p>
+            ) : (
+                <table className="products-table">
+                    <thead>
+                        <tr>
                             {headers.map((header) => (
-                                <td
+                                <th
                                     key={String(header)}
-                                    className={`cell-${header}`}
+                                    className={`col-${header}`}
                                 >
-                                    {typeof row[header] === 'object'
-                                        ? JSON.stringify(row[header])
-                                        : String(row[header])}
-                                </td>
+                                    <span>{String(header)}</span>
+                                    <button onClick={() => handleSort(header)}>
+                                        {sortConfig.key === header
+                                            ? sortConfig.direction ===
+                                              'ascending'
+                                                ? '▲'
+                                                : '▼'
+                                            : '⇅'}
+                                    </button>
+                                </th>
                             ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {sortedData.map((row, index) => (
+                            <tr key={row.id || index}>
+                                {headers.map((header) => (
+                                    <td
+                                        key={String(header)}
+                                        className={`cell-${header}`}
+                                    >
+                                        {typeof row[header] === 'object'
+                                            ? JSON.stringify(row[header])
+                                            : String(row[header])}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
             <Pagination
                 productsPerPage={productsPerPage}
                 totalProducts={totalProducts}
@@ -152,4 +159,4 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ colOrder }) => {
     );
 };
 
-export default ProductsTable;
+export default ServerFetchProductsTable;

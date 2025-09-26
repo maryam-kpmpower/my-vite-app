@@ -1,15 +1,20 @@
 import './ProductPage.scss';
-import ProductsTable from '../../components/Table/ProductsTable';
+// import ServerFetchProductsTable from '../../components/Table/ServerFetchProductsTable';
+import ServerUseQueryProductsTable from '../../components/Table/ServerUseQueryProductsTable';
 
 const ProductPage: React.FC = () => {
     return (
         <div className="product-page">
             <h2>Products Page</h2>
             <div className="products">
-                <h2>Proucts Table</h2>
-                {/* automatic rendering of the table - useEffect */}
-                {/* with server-side pagination */}
-                <ProductsTable />
+                <h2>Products Table</h2>
+                {/* with server-side pagination and simple fetch */}
+                {/* <ServerFetchProductsTable /> */}
+                {/* with react-query */}
+                <ServerUseQueryProductsTable />
+            </div>
+            <div className="note">
+                <h3>Note:</h3>
             </div>
             <ul>
                 <li>
